@@ -39,9 +39,7 @@ const Start = ({ navigation }) => {
 
             {/* background color chooser */}
             <View style={styles.bigitem}>
-              <>
-                <Text style={styles.text}>Choose Background Color:</Text>
-              </>
+              <Text style={styles.text}>Choose Background Color:</Text>
               <View style={styles.circleWrapper}>
                 {/* render the four circles via .map */}
                 {bgcolors.map((bgcolor) => {
