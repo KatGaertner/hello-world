@@ -40,7 +40,7 @@ export const themes = [
 ];
 
 export const styles = StyleSheet.create({
-  container: {
+  pageContainer: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-evenly",
@@ -50,17 +50,29 @@ export const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  topContainer: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  bottomContainer: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   contentbox: {
     backgroundColor: colors.box,
     width: "88%",
-    height: "44%",
+    height: "88%",
     justifyContent: "center",
     alignItems: "center",
   },
   wrapper: {
     width: "88%",
     height: "88%",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
   title: {
@@ -93,11 +105,11 @@ export const styles = StyleSheet.create({
   },
   bigitem: {
     width: "100%",
-    paddingVertical: 5,
+    marginVertical: 5,
   },
   circleWrapper: {
     flexDirection: "row",
-    paddingVertical: 5,
+    marginTop: 5,
   },
   circle: {
     height: 50,
