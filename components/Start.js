@@ -30,21 +30,25 @@ const Start = ({ navigation }) => {
         <View style={styles.contentbox}>
           <View style={styles.wrapper}>
             {/* name input */}
-            <TextInput
-              style={[styles.bigitem, styles.textInput, styles.text]}
-              value={name}
-              onChangeText={setName}
-              placeholder="Your Name"
-            ></TextInput>
+            <View style={styles.bigitem}>
+              <Text style={styles.text}>Your name:</Text>
+              <TextInput
+                style={[styles.textInput, styles.text]}
+                value={name}
+                onChangeText={setName}
+                accessibilityLabel="Your name"
+              ></TextInput>
+            </View>
 
             {/* background color chooser */}
             <View style={styles.bigitem}>
               <Text style={styles.text}>Choose Background Color:</Text>
-              <View style={styles.circleWrapper}>
+              <View style={styles.circleWrapper} accessibilityRole="radiogroup">
                 {/* render the four circles via .map */}
                 {bgcolors.map((bgcolor) => {
                   return (
                     <TouchableOpacity
+                      accessibilityRole="radio"
                       style={[
                         styles.circle,
                         { backgroundColor: bgcolor },
@@ -53,6 +57,9 @@ const Start = ({ navigation }) => {
                           ? styles.circleselected
                           : null,
                       ]}
+                      accessibilityState={{
+                        checked: backgroundColor === bgcolor ? true : false,
+                      }}
                       key={bgcolor}
                       onPress={() => setBackgroundColor(bgcolor)}
                     ></TouchableOpacity>
@@ -63,6 +70,7 @@ const Start = ({ navigation }) => {
 
             {/* button */}
             <TouchableOpacity
+              accessibilityRole="button"
               style={[styles.bigitem, styles.button]}
               onPress={() => {
                 navigation.navigate("Chat", {
