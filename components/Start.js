@@ -47,6 +47,7 @@ const Start = ({ navigation }) => {
                   return (
                     <TouchableOpacity
                       accessibilityRole="radio"
+                      accessibilityLabel={theme.name}
                       style={[
                         styles.circle,
                         { backgroundColor: theme.bgColor },
