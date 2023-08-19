@@ -1,10 +1,45 @@
 import { StyleSheet } from "react-native";
 
-const colors = {
+export const colors = {
+  box: "#FFF",
   primary: "#757083",
+  leftBubble: { bg: "#FFF", text: "#000", statusText: "#767676" },
+  rightBubble: { bg: "#FCFFEB", text: "#000", statusText: "#757766" },
 };
 
-const styles = StyleSheet.create({
+export const themes = [
+  {
+    bgColor: "#090C08",
+    name: "black",
+    statusTextColor: "#787a77",
+    sendColor: "#172612",
+  },
+  {
+    bgColor: "#474056",
+    name: "violet",
+    statusTextColor: "#B4ACC1",
+    sendColor: "#4d3d70",
+  },
+  {
+    bgColor: "#8A95A5",
+    name: "blue grey",
+    statusTextColor: "#292E36",
+    sendColor: "#596d8c",
+  },
+  {
+    bgColor: "#B9C6AE",
+    name: "light green",
+    statusTextColor: "#48543D",
+    sendColor: "#657b53",
+  },
+  // {
+  //   bg: "white",
+  //   name: "high contrast",
+  //   statusTextColor: "black",
+  // },
+];
+
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
@@ -16,7 +51,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   contentbox: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.box,
     width: "88%",
     height: "44%",
     justifyContent: "center",
@@ -64,10 +99,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 5,
   },
-  circleselected: {
-    borderWidth: 5,
-    borderColor: "white",
-  },
   circle: {
     height: 50,
     width: 50,
@@ -81,5 +112,3 @@ const styles = StyleSheet.create({
     height: 50,
   },
 });
-
-export default styles;

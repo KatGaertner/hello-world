@@ -6,13 +6,11 @@ import {
   ImageBackground,
 } from "react-native";
 import { useState } from "react";
-import styles from "./styles";
+import { styles, themes } from "./styles";
 
 const Start = ({ navigation }) => {
   const [name, setName] = useState("");
-
-  const bgcolors = ["#090C08", "#474056", "#8A95A5", "#B9C6AE"];
-  const [backgroundColor, setBackgroundColor] = useState(bgcolors[0]);
+  const [userTheme, setUserTheme] = useState(themes[0]);
 
   const backgroundImage = "../assets/images/BackgroundImage.png";
 
@@ -45,23 +43,26 @@ const Start = ({ navigation }) => {
               <Text style={styles.text}>Choose Background Color:</Text>
               <View style={styles.circleWrapper} accessibilityRole="radiogroup">
                 {/* render the four circles via .map */}
-                {bgcolors.map((bgcolor) => {
+                {themes.map((theme) => {
                   return (
                     <TouchableOpacity
                       accessibilityRole="radio"
                       style={[
                         styles.circle,
-                        { backgroundColor: bgcolor },
+                        { backgroundColor: theme.bgColor },
                         // add another styling if selected
-                        backgroundColor === bgcolor
-                          ? styles.circleselected
+                        userTheme === theme
+                          ? {
+                              borderWidth: 5,
+                              borderColor: userTheme.statusTextColor,
+                            }
                           : null,
                       ]}
                       accessibilityState={{
-                        checked: backgroundColor === bgcolor ? true : false,
+                        checked: userTheme === theme ? true : false,
                       }}
-                      key={bgcolor}
-                      onPress={() => setBackgroundColor(bgcolor)}
+                      key={theme.name}
+                      onPress={() => setUserTheme(theme)}
                     ></TouchableOpacity>
                   );
                 })}
@@ -75,7 +76,7 @@ const Start = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("Chat", {
                   name: name,
-                  backgroundColor: backgroundColor,
+                  theme: userTheme,
                 });
               }}
             >
