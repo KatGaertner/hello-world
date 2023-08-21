@@ -5,12 +5,34 @@ import Chat from "./components/Chat";
 
 const Stack = createNativeStackNavigator();
 
+import { initializeApp } from "firebase/app";
+import { getFirestore, initializeFirestore } from "firebase/firestore";
+
 const App = () => {
+  const firebaseConfig = {
+    apiKey: "AIzaSyBC29a6Gl8GWpWNMnww5SgFzFDvTelLp3A",
+    authDomain: "hello-world-c9327.firebaseapp.com",
+    projectId: "hello-world-c9327",
+    storageBucket: "hello-world-c9327.appspot.com",
+    messagingSenderId: "119317310252",
+    appId: "1:119317310252:web:dd9cf796720520c5fe1a89",
+  };
+  const app = initializeApp(firebaseConfig);
+
+  // ---- for me, only the second expression works. might be different on different networks.
+  // const db = getFirestore(app);
+  const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+    useFetchStreams: false,
+  });
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Start">
         <Stack.Screen name="Start" component={Start} />
-        <Stack.Screen name="Chat" component={Chat} />
+        <Stack.Screen name="Chat">
+          {(props) => <Chat db={db} {...props} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

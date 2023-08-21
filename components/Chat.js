@@ -1,4 +1,4 @@
-import { View, KeyboardAvoidingView, Text } from "react-native";
+import { View, KeyboardAvoidingView } from "react-native";
 import { useEffect, useState } from "react";
 import {
   GiftedChat,
@@ -10,13 +10,43 @@ import {
 } from "react-native-gifted-chat";
 import { colors } from "./styles";
 
-const Chat = ({ route, navigation }) => {
+import {
+  collection,
+  addDoc,
+  onSnapshot,
+  query,
+  orderBy,
+} from "firebase/firestore";
+
+const Chat = ({ route, navigation, db }) => {
   const [messages, setMessages] = useState([]);
-  const { name, theme } = route.params;
+  const { name, theme, userID } = route.params;
 
   useEffect(() => {
     navigation.setOptions({ title: name });
+
+    // subscribe to firestore
+    const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
+    const unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+      let newMessages = [];
+      documentsSnapshot.forEach((doc) => {
+        newMessages.push({
+          id: doc.id,
+          ...doc.data(),
+          createdAt: doc.data().createdAt.toDate(),
+        });
+      });
+      setMessages(newMessages);
+    });
+    // clean up
+    return () => {
+      if (unsubMessages) unsubMessages();
+    };
   }, []);
+
+  const onSend = async (newMessages) => {
+    addDoc(collection(db, "messages"), newMessages[0]);
+  };
 
   // ------ interface styling
 
@@ -70,34 +100,6 @@ const Chat = ({ route, navigation }) => {
     return <Send {...props} textStyle={{ color: theme.sendColor }} />;
   };
 
-  // ------ messaging logic
-
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-        },
-      },
-      {
-        _id: 2,
-        text: "This is a system message",
-        createdAt: new Date(),
-        system: true,
-      },
-    ]);
-  }, []);
-
-  const onSend = (newMessages) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, newMessages)
-    );
-  };
-
   // ------ render
 
   return (
@@ -106,7 +108,8 @@ const Chat = ({ route, navigation }) => {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          _id: 1,
+          userID,
+          name,
         }}
         renderAvatar={() => null}
         renderBubble={renderCustomBubble}

@@ -5,16 +5,32 @@ import {
   TouchableOpacity,
   ImageBackground,
   KeyboardAvoidingView,
-  ScrollView,
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import { styles, themes } from "./styles";
 
+import { getAuth, signInAnonymously } from "firebase/auth";
+
 const Start = ({ navigation }) => {
   const [name, setName] = useState("");
   const [userTheme, setUserTheme] = useState(themes[0]);
-
   const backgroundImage = "../assets/images/BackgroundImage.png";
+
+  const auth = getAuth();
+  const signInUser = () => {
+    signInAnonymously(auth)
+      .then((result) => {
+        navigation.navigate("Chat", {
+          name,
+          theme: userTheme,
+          userID: result.user.uid,
+        });
+      })
+      .catch((error) => {
+        Alert.alert("Unable to sign in, try later again.");
+      });
+  };
 
   return (
     <View style={styles.pageContainer}>
@@ -83,10 +99,7 @@ const Start = ({ navigation }) => {
                 accessibilityRole="button"
                 style={[styles.bigitem, styles.button]}
                 onPress={() => {
-                  navigation.navigate("Chat", {
-                    name: name,
-                    theme: userTheme,
-                  });
+                  signInUser();
                 }}
               >
                 <Text style={[styles.text, styles.button_text]}>
