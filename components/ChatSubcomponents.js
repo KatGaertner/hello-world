@@ -4,6 +4,7 @@ import {
   Day,
   Time,
   Send,
+  InputToolbar,
 } from "react-native-gifted-chat";
 import { colors } from "./styles";
 
@@ -56,4 +57,11 @@ export const CustomTime = (props) => {
 };
 export const CustomSend = (props, theme) => {
   return <Send {...props} textStyle={{ color: theme.sendColor }} />;
+};
+export const CustomInputToolbar = (props, isConnected) => {
+  if (isConnected) {
+    return <InputToolbar {...props} />;
+  } else {
+    return null;
+  }
 };

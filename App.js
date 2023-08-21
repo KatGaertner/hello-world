@@ -6,7 +6,16 @@ import Chat from "./components/Chat";
 const Stack = createNativeStackNavigator();
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, initializeFirestore } from "firebase/firestore";
+import {
+  getFirestore,
+  initializeFirestore,
+  enableNetwork,
+  disableNetwork,
+} from "firebase/firestore";
+
+import { useNetInfo } from "@react-native-community/netinfo";
+import { useEffect } from "react";
+import { Alert } from "react-native";
 
 const App = () => {
   const firebaseConfig = {
@@ -26,12 +35,29 @@ const App = () => {
     useFetchStreams: false,
   });
 
+  const connectionStatus = useNetInfo();
+
+  useEffect(() => {
+    if (connectionStatus.isConnected === false) {
+      Alert.alert("Connection lost!");
+      disableNetwork(db);
+    } else if (connectionStatus.isConnected === true) {
+      enableNetwork(db);
+    }
+  }, [connectionStatus.isConnected]);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Start">
         <Stack.Screen name="Start" component={Start} />
         <Stack.Screen name="Chat">
-          {(props) => <Chat db={db} {...props} />}
+          {(props) => (
+            <Chat
+              isConnected={connectionStatus.isConnected}
+              db={db}
+              {...props}
+            />
+          )}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
