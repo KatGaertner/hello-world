@@ -31,13 +31,13 @@ export const CustomBubble = (props) => {
   );
 };
 
-export const CustomSystemMessage = (props) => {
+export const CustomSystemMessage = (props, theme) => {
   return (
-    <SystemMessage {...props} textStyle={{ color: props.statusTextColor }} />
+    <SystemMessage {...props} textStyle={{ color: theme.statusTextColor }} />
   );
 };
-export const CustomDay = (props) => {
-  return <Day {...props} textStyle={{ color: props.statusTextColor }} />;
+export const CustomDay = (props, theme) => {
+  return <Day {...props} textStyle={{ color: theme.statusTextColor }} />;
 };
 export const CustomTime = (props) => {
   return (
@@ -54,6 +54,6 @@ export const CustomTime = (props) => {
     />
   );
 };
-export const CustomSend = (props) => {
-  return <Send {...props} textStyle={{ color: props.sendColor }} />;
+export const CustomSend = (props, theme) => {
+  return <Send {...props} textStyle={{ color: theme.sendColor }} />;
 };
