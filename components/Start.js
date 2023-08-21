@@ -108,11 +108,9 @@ const Start = ({ navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-          {Platform.OS === "android" ? (
-            <KeyboardAvoidingView behavior="height" />
-          ) : Platform.OS === "ios" ? (
-            <KeyboardAvoidingView behavior="padding" />
-          ) : null}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          />
         </View>
       </ImageBackground>
     </View>

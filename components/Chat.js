@@ -1,14 +1,13 @@
 import { View, KeyboardAvoidingView } from "react-native";
 import { useEffect, useState } from "react";
+import { GiftedChat } from "react-native-gifted-chat";
 import {
-  GiftedChat,
-  Bubble,
-  SystemMessage,
-  Day,
-  Time,
-  Send,
-} from "react-native-gifted-chat";
-import { colors } from "./styles";
+  CustomBubble,
+  CustomDay,
+  CustomSend,
+  CustomSystemMessage,
+  CustomTime,
+} from "./ChatSubcomponents";
 
 import {
   collection,
@@ -48,60 +47,6 @@ const Chat = ({ route, navigation, db }) => {
     addDoc(collection(db, "messages"), newMessages[0]);
   };
 
-  // ------ interface styling
-
-  const renderCustomBubble = (props) => {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          left: {
-            backgroundColor: colors.leftBubble.bg,
-          },
-          right: {
-            backgroundColor: colors.rightBubble.bg,
-          },
-        }}
-        textStyle={{
-          left: {
-            color: colors.leftBubble.text,
-          },
-          right: {
-            color: colors.rightBubble.text,
-          },
-        }}
-      />
-    );
-  };
-  const renderCustomSystemMessage = (props) => {
-    return (
-      <SystemMessage {...props} textStyle={{ color: theme.statusTextColor }} />
-    );
-  };
-  const renderCustomDay = (props) => {
-    return <Day {...props} textStyle={{ color: theme.statusTextColor }} />;
-  };
-  const renderCustomTime = (props) => {
-    return (
-      <Time
-        {...props}
-        timeTextStyle={{
-          left: {
-            color: colors.leftBubble.statusText,
-          },
-          right: {
-            color: colors.rightBubble.statusText,
-          },
-        }}
-      />
-    );
-  };
-  const renderCustomSend = (props) => {
-    return <Send {...props} textStyle={{ color: theme.sendColor }} />;
-  };
-
-  // ------ render
-
   return (
     <View style={[{ flex: 1, backgroundColor: theme.bgColor }]}>
       <GiftedChat
@@ -112,17 +57,15 @@ const Chat = ({ route, navigation, db }) => {
           name,
         }}
         renderAvatar={() => null}
-        renderBubble={renderCustomBubble}
-        renderSystemMessage={renderCustomSystemMessage}
-        renderDay={renderCustomDay}
-        renderTime={renderCustomTime}
-        renderSend={renderCustomSend}
+        renderBubble={CustomBubble}
+        renderSystemMessage={(props) => CustomSystemMessage(props, theme)}
+        renderDay={(props) => CustomDay(props, theme)}
+        renderTime={CustomTime}
+        renderSend={(props) => CustomSend(props, theme)}
       />
-      {Platform.OS === "android" ? (
-        <KeyboardAvoidingView behavior="height" />
-      ) : Platform.OS === "ios" ? (
-        <KeyboardAvoidingView behavior="padding" />
-      ) : null}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      />
     </View>
   );
 };
