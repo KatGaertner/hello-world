@@ -57,7 +57,7 @@ const Chat = ({ route, navigation, db }) => {
         messages={messages}
         onSend={(messages) => onSend(messages)}
         user={{
-          userID,
+          _id: userID,
           name,
         }}
         renderAvatar={() => null}
