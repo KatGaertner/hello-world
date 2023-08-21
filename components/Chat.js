@@ -22,12 +22,14 @@ const Chat = ({ route, navigation, db }) => {
   const { name, theme, userID } = route.params;
 
   useEffect(() => {
+    // set title of page to username
     navigation.setOptions({ title: name });
 
     // subscribe to firestore
     const q = query(collection(db, "messages"), orderBy("createdAt", "desc"));
     const unsubMessages = onSnapshot(q, (documentsSnapshot) => {
       let newMessages = [];
+      // add each new message to the list of messages
       documentsSnapshot.forEach((doc) => {
         newMessages.push({
           id: doc.id,
@@ -37,13 +39,15 @@ const Chat = ({ route, navigation, db }) => {
       });
       setMessages(newMessages);
     });
-    // clean up
+
+    // clean up on unmount
     return () => {
       if (unsubMessages) unsubMessages();
     };
   }, []);
 
   const onSend = async (newMessages) => {
+    // add each sent message as a document to the firestore collection
     addDoc(collection(db, "messages"), newMessages[0]);
   };
 
