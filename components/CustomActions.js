@@ -110,8 +110,8 @@ const CustomActions = (props, theme, storage) => {
 
   const onActionPress = () => {
     const options = [
-      "Choose From Library",
-      "Take Picture",
+      "Send Image from Library",
+      "Send Image from Camera",
       "Send Location",
       "Cancel",
     ];
