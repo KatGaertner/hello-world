@@ -1,10 +1,19 @@
 import MapView, { Marker, Circle } from "react-native-maps";
-import { View } from "react-native";
+import { TouchableOpacity, Linking } from "react-native";
 
 import { styles } from "./styles";
 
 const CustomView = (props) => {
   const { currentMessage } = props;
+
+  const openMaps = (location) => {
+    const url = `http://maps.google.com/?q=${location.latitude},${location.longitude}`;
+    const supported = Linking.canOpenURL(url);
+    if (supported) {
+      return Linking.openURL(url);
+    }
+    return null;
+  };
 
   //   https://github.com/react-native-maps/react-native-maps/issues/505#issuecomment-354029449
   const getRegion = (location, zoomOutFactor) => {
@@ -25,14 +34,15 @@ const CustomView = (props) => {
 
   if (currentMessage.location) {
     return (
-      <View
+      <TouchableOpacity
+        onPress={() => openMaps(currentMessage.location)}
         style={[
           styles.mapBorder,
           { borderColor: props.wrapperStyle[props.position].backgroundColor },
         ]}
       >
         <MapView
-          style={{ width: 250, height: 170, borderRadius: 10 }}
+          style={{ width: 150, height: 100, borderRadius: 10 }}
           region={getRegion(currentMessage.location, 10)}
         >
           <Circle
@@ -52,7 +62,7 @@ const CustomView = (props) => {
             pinColor="#0066cc"
           />
         </MapView>
-      </View>
+      </TouchableOpacity>
     );
   }
   return null;
