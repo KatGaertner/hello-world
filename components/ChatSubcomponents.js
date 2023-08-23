@@ -6,6 +6,7 @@ import {
   Send,
   InputToolbar,
 } from "react-native-gifted-chat";
+
 import { colors } from "./styles";
 
 export const CustomBubble = (props) => {

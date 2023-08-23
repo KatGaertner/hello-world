@@ -9,6 +9,8 @@ import {
   CustomTime,
   CustomInputToolbar,
 } from "./ChatSubcomponents";
+import CustomActions from "./CustomActions";
+import CustomView from "./CustomView";
 
 import {
   collection,
@@ -19,7 +21,7 @@ import {
 } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Chat = ({ route, navigation, db, isConnected }) => {
+const Chat = ({ route, navigation, db, isConnected, storage }) => {
   const [messages, setMessages] = useState([]);
   const { name, theme, userID } = route.params;
 
@@ -94,6 +96,8 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         renderDay={(props) => CustomDay(props, theme)}
         renderTime={CustomTime}
         renderSend={(props) => CustomSend(props, theme)}
+        renderActions={(props) => CustomActions(props, theme, storage)}
+        renderCustomView={CustomView}
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}

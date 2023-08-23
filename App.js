@@ -12,6 +12,7 @@ import {
   enableNetwork,
   disableNetwork,
 } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
 import { useNetInfo } from "@react-native-community/netinfo";
 import { useEffect } from "react";
@@ -28,6 +29,7 @@ const App = () => {
   };
   const app = initializeApp(firebaseConfig);
 
+  const storage = getStorage(app);
   // ---- for me, only the second expression works. might be different on different networks.
   // const db = getFirestore(app);
   const db = initializeFirestore(app, {
@@ -55,6 +57,7 @@ const App = () => {
             <Chat
               isConnected={connectionStatus.isConnected}
               db={db}
+              storage={storage}
               {...props}
             />
           )}

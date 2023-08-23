@@ -123,4 +123,29 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     height: 50,
   },
+  actionBtnWrapper: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  smolCircle: {
+    height: 36,
+    width: 36,
+    borderRadius: 18,
+    margin: 5,
+  },
+  iconText: {
+    fontWeight: "bold",
+    fontSize: 22,
+    marginBottom: 2,
+  },
+  mapBorder: {
+    alignself: "center",
+    //   top: 30,
+    width: "100%",
+    height: "auto",
+    borderRadius: 15,
+    borderWidth: 3,
+    borderColor: "white",
+    overflow: "hidden",
+  },
 });
