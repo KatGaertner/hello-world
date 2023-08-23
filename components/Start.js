@@ -37,7 +37,7 @@ const Start = ({ navigation }) => {
       <ImageBackground
         source={require(backgroundImage)}
         resizeMode="cover"
-        style={[styles.backgroundImage, styles.pageContainer]}
+        style={[styles.pageContainer, styles.backgroundImage]}
       >
         {/* title */}
         <View style={styles.topContainer}>
@@ -109,9 +109,10 @@ const Start = ({ navigation }) => {
             </View>
           </View>
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS === "ios" ? "padding" : null}
           />
         </View>
+        <View style={styles.paddingBox}></View>
       </ImageBackground>
     </View>
   );

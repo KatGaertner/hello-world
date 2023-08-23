@@ -1,5 +1,12 @@
 import { StyleSheet } from "react-native";
 
+// calculating the
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
+const paddingBoxHeight = screenWidth * 0.06;
+const titleBoxHeight = screenHeight - 0.44 * screenHeight - paddingBoxHeight;
+
 export const colors = {
   box: "#FFF",
   primary: "#757083",
@@ -46,29 +53,37 @@ export const styles = StyleSheet.create({
     height: "100%",
   },
   topContainer: {
-    flex: 1,
-    width: "100%",
+    flexShrink: 1,
+    flexBasis: titleBoxHeight,
     justifyContent: "center",
     alignItems: "center",
   },
   bottomContainer: {
-    flex: 1,
+    flex: 0,
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
   },
+  paddingBox: {
+    flexBasis: paddingBoxHeight,
+    flexShrink: 2,
+    minHeight: 0,
+  },
   contentbox: {
+    flex: 0,
     backgroundColor: colors.box,
     width: "88%",
-    height: "88%",
     justifyContent: "center",
     alignItems: "center",
+    minHeight: "44%",
   },
   wrapper: {
+    flex: 0,
+    flexGrow: 1,
     width: "88%",
-    height: "88%",
     justifyContent: "space-evenly",
     alignItems: "center",
+    paddingVertical: 2,
   },
   title: {
     fontSize: 45,
@@ -100,7 +115,7 @@ export const styles = StyleSheet.create({
   },
   bigitem: {
     width: "100%",
-    marginVertical: 5,
+    marginVertical: 8,
   },
   circleWrapper: {
     flexDirection: "row",
