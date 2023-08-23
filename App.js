@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { Alert } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Start from "./components/Start";
@@ -15,8 +17,6 @@ import {
 import { getStorage } from "firebase/storage";
 
 import { useNetInfo } from "@react-native-community/netinfo";
-import { useEffect } from "react";
-import { Alert } from "react-native";
 
 const App = () => {
   const firebaseConfig = {

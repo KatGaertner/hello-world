@@ -1,6 +1,5 @@
 import { TouchableOpacity, View, Text, Alert } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import { useState } from "react";
 
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
@@ -53,7 +52,6 @@ const CustomActions = (props, theme, storage) => {
       try {
         await MediaLibrary.saveToLibraryAsync(result.assets[0].uri);
       } catch (error) {
-        // Alert.alert("Error", "Could not save image.");
         console.log(error);
       }
     }

@@ -32,11 +32,6 @@ export const themes = [
     statusTextColor: "#48543D",
     sendColor: "#657b53",
   },
-  // {
-  //   bg: "white",
-  //   name: "high contrast",
-  //   statusTextColor: "black",
-  // },
 ];
 
 export const styles = StyleSheet.create({
@@ -140,7 +135,6 @@ export const styles = StyleSheet.create({
   },
   mapBorder: {
     alignself: "center",
-    //   top: 30,
     width: "100%",
     height: "auto",
     borderRadius: 15,

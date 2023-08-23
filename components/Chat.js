@@ -1,6 +1,6 @@
 import { View, KeyboardAvoidingView } from "react-native";
 import { useEffect, useState } from "react";
-import { GiftedChat, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat } from "react-native-gifted-chat";
 import {
   CustomBubble,
   CustomDay,
