@@ -92,6 +92,8 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
         }}
         renderInputToolbar={(props) => CustomInputToolbar(props, isConnected)}
         renderAvatar={() => null}
+        showAvatarForEveryMessage={true}
+        renderUsernameOnMessage={true}
         renderBubble={CustomBubble}
         renderSystemMessage={(props) => CustomSystemMessage(props, theme)}
         renderDay={(props) => CustomDay(props, theme)}
