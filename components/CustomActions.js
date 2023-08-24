@@ -140,13 +140,10 @@ const CustomActions = (props, theme, storage) => {
   // use expo-location to get and send the phone's location
   const sendLocation = async () => {
     let permission = await Location.requestForegroundPermissionsAsync();
-    console.log(permission);
     if (permission?.granted) {
       try {
         let location = await Location.getCurrentPositionAsync({});
-        console.log(location);
         if (location) {
-          console.log(location);
           // send message with the location added
           onSend({
             location: {
