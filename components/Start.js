@@ -45,7 +45,7 @@ const Start = ({ navigation }) => {
       >
         {/* title */}
         <View style={styles.topContainer}>
-          <Text style={styles.title}>App Title</Text>
+          <Text style={styles.title}>Hello World</Text>
         </View>
 
         {/* box */}
