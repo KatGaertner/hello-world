@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { TouchableOpacity, View, Text, Alert } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
+
+import * as DocumentPicker from "expo-document-picker";
 
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -13,6 +16,7 @@ import { uriToBlob } from "../util/uriToBlob";
 
 const CustomActions = (props, theme, storage) => {
   const { onSend, user } = props;
+  const [useDocumentPicker, setUseDocumentPicker] = useState(false);
 
   // definition of action sheet
   const actionSheet = useActionSheet();
@@ -100,8 +104,19 @@ const CustomActions = (props, theme, storage) => {
     }
   };
 
-  // use expo-image-picker to get an image from the phone's image library
+  // because of problems with the image picker, two functions can be called
+  // per default, imagepicker is tried first
+  // TODO: persist useDocumentPicker
   const pickImage = async () => {
+    if (!useDocumentPicker) {
+      regularImagePicker();
+    } else {
+      imageWorkaround();
+    }
+  };
+
+  // use expo-image-picker to get an image from the phone's image library
+  const regularImagePicker = async () => {
     let permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permission?.granted) {
       try {
@@ -110,11 +125,43 @@ const CustomActions = (props, theme, storage) => {
           await uploadAndSendImage(result.assets[0].uri);
         }
       } catch (error) {
-        Alert.alert("Error", "Could not get image.");
+        // if the first method fails, offer user to try the other method
         console.error(error);
+        Alert.alert(
+          "Error",
+          "Could not get image. Try again?",
+          [
+            { text: "Yes", onPress: imageWorkaround },
+            {
+              text: "No",
+              onPress: () => null,
+              style: "cancel",
+            },
+          ],
+          { cancelable: true }
+        );
       }
     } else {
       Alert.alert("Permission denied", "Can't get images.");
+    }
+  };
+
+  // workaround for issues with android's new image picker
+  const imageWorkaround = async () => {
+    // does not need permissions ? documentation mentions none
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: "image/*",
+        // copyToCacheDirectory: true,
+      });
+      if (!result.canceled) {
+        // remember that this method worked:
+        setUseDocumentPicker(true);
+        await uploadAndSendImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Could not get image.");
+      console.error(error);
     }
   };
 
