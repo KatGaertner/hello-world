@@ -53,7 +53,10 @@ const CustomActions = (props, theme, storage) => {
         await MediaLibrary.saveToLibraryAsync(result.assets[0].uri);
       } catch (error) {
         console.log(error);
+        Alert.alert("Error", "Could not save image to your phone.");
       }
+    } else {
+      Alert.alert("Permission denied", "Can't save image to your phone.");
     }
   };
 
@@ -69,6 +72,8 @@ const CustomActions = (props, theme, storage) => {
         Alert.alert("Error", "Could not get image.");
         console.error(error);
       }
+    } else {
+      Alert.alert("Permission denied", "Can't get images.");
     }
   };
 
@@ -85,6 +90,8 @@ const CustomActions = (props, theme, storage) => {
         Alert.alert("Error", "Could not get camera.");
         console.log(error);
       }
+    } else {
+      Alert.alert("Permission denied", "Can't get camera.");
     }
   };
 
@@ -105,6 +112,8 @@ const CustomActions = (props, theme, storage) => {
           console.log(e);
           Alert.alert("Error", "Could not get location.");
         });
+    } else {
+      Alert.alert("Permission denied", "Can't get location.");
     }
   };
 
