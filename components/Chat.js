@@ -52,13 +52,13 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     };
   }, [isConnected]);
 
+  // add each sent message as a document to the firestore collection
   const onSend = async (newMessages) => {
-    // add each sent message as a document to the firestore collection
     addDoc(collection(db, "messages"), newMessages[0]);
   };
 
+  // add each new message to the local list of messages
   const addMessage = (doc, newMessages) => {
-    // add each new message to the list of messages
     newMessages.push({
       id: doc.id,
       ...doc.data(),
@@ -66,8 +66,8 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     });
   };
 
+  // store all messages in localstorage
   const cacheMessages = async (messagesToCache) => {
-    // store messages in localstorage
     try {
       await AsyncStorage.setItem("messages", JSON.stringify(messagesToCache));
     } catch (error) {
@@ -75,6 +75,7 @@ const Chat = ({ route, navigation, db, isConnected, storage }) => {
     }
   };
 
+  // try to load messages from localstorage, or return an empty array
   const loadCachedMessages = async () => {
     const cachedMessages = (await AsyncStorage.getItem("messages")) || [];
     setMessages(JSON.parse(cachedMessages));

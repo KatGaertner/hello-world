@@ -17,10 +17,14 @@ const Start = ({ navigation }) => {
   const [userTheme, setUserTheme] = useState(themes[0]);
   const backgroundImage = "../assets/images/BackgroundImage.png";
 
+  // allow users to anonymously sing in to the app
   const auth = getAuth();
   const signInUser = () => {
     signInAnonymously(auth)
       .then((result) => {
+        // then send them to the chat screen,
+        // supply an object with their settings (name/theme)
+        // and the ID that firestore assigned them
         navigation.navigate("Chat", {
           name,
           theme: userTheme,

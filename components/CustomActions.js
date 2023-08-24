@@ -24,8 +24,44 @@ const CustomActions = (props, theme, storage) => {
 
   const { onSend, user } = props;
 
+  // definition of action sheet
   const actionSheet = useActionSheet();
+  const onActionPress = () => {
+    // the displayed options with emoji
+    const options = [
+      `${String.fromCodePoint(128444)}${String.fromCodePoint(65039)}` +
+        "  Send Image from Library",
+      `${String.fromCodePoint(128247)}` + "  Send Image from Camera",
+      `${String.fromCodePoint(128205)}` + "  Send Location",
+      `${String.fromCodePoint(10060)}` + "  Cancel",
+    ];
+    const cancelButtonIndex = options.length - 1;
 
+    actionSheet.showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+      },
+      // defining the connected actions
+      async (buttonIndex) => {
+        switch (buttonIndex) {
+          case 0:
+            pickImage();
+            return;
+          case 1:
+            takePhoto();
+            return;
+          case 2:
+            sendLocation();
+            return;
+          default:
+        }
+      }
+    );
+  };
+
+  // generate reference string for uploading the image
+  // from upload time, image uri and user id
   const generateReference = (uri) => {
     const timeStamp = new Date().getTime();
     const imageName = uri.split("/")[uri.split("/").length - 1];
@@ -33,18 +69,25 @@ const CustomActions = (props, theme, storage) => {
   };
 
   const uploadAndSendImage = async (imageURI) => {
+    // get the image from the file uri as a blob
     let blob;
     if (Platform.OS === "android") {
+      // using a utility function workaround on android, see more in that file
       blob = await uriToBlob(imageURI);
     } else {
       const response = await fetch(imageURI);
       blob = await response.blob();
     }
+    // generate reference string as unique identifier
     const uniqueRefString = generateReference(imageURI);
+    // generate reference for the upload to firebase
     const newUploadRef = ref(storage, uniqueRefString);
     try {
+      // upload the image
       const snapshot = await uploadBytes(newUploadRef, blob);
+      // get the url where the image is uploaded
       const imageURL = await getDownloadURL(snapshot.ref);
+      // send message with attached image url
       onSend({ image: imageURL });
     } catch (error) {
       Alert.alert("Error", "Could not upload image.");
@@ -52,6 +95,7 @@ const CustomActions = (props, theme, storage) => {
     }
   };
 
+  // use expo-media-library to save image to phone
   const saveImage = async (result) => {
     let permission = await requestMediaLibraryPermission();
     if (permission?.granted) {
@@ -66,6 +110,7 @@ const CustomActions = (props, theme, storage) => {
     }
   };
 
+  // use expo-image-picker to get an image from the phone's image library
   const pickImage = async () => {
     let permission = await requestImagePickerPermissions();
     if (permission?.granted) {
@@ -83,6 +128,7 @@ const CustomActions = (props, theme, storage) => {
     }
   };
 
+  // use expo-image-picker to take a picture with the phone's camera
   const takePhoto = async () => {
     let permission = await requestCameraPermission();
     if (permission?.granted) {
@@ -101,11 +147,13 @@ const CustomActions = (props, theme, storage) => {
     }
   };
 
+  // use expo-location to get and send the phone's location
   const sendLocation = async () => {
     let permission = await requestLocationPermission();
     if (permission?.granted) {
       Location.getCurrentPositionAsync({})
         .then((location) => {
+          // send message with the location added
           onSend({
             location: {
               longitude: location.coords.longitude,
@@ -121,37 +169,6 @@ const CustomActions = (props, theme, storage) => {
     } else {
       Alert.alert("Permission denied", "Can't get location.");
     }
-  };
-
-  const onActionPress = () => {
-    const options = [
-      `${String.fromCodePoint(128444)}${String.fromCodePoint(65039)}` +
-        "  Send Image from Library",
-      `${String.fromCodePoint(128247)}` + "  Send Image from Camera",
-      `${String.fromCodePoint(128205)}` + "  Send Location",
-      `${String.fromCodePoint(10060)}` + "  Cancel",
-    ];
-    const cancelButtonIndex = options.length - 1;
-    actionSheet.showActionSheetWithOptions(
-      {
-        options,
-        cancelButtonIndex,
-      },
-      async (buttonIndex) => {
-        switch (buttonIndex) {
-          case 0:
-            pickImage();
-            return;
-          case 1:
-            takePhoto();
-            return;
-          case 2:
-            sendLocation();
-            return;
-          default:
-        }
-      }
-    );
   };
 
   return (

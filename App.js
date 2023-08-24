@@ -28,8 +28,8 @@ const App = () => {
     appId: "1:119317310252:web:dd9cf796720520c5fe1a89",
   };
   const app = initializeApp(firebaseConfig);
-
   const storage = getStorage(app);
+
   // ---- for me, only the second expression works. might be different on different networks.
   // const db = getFirestore(app);
   const db = initializeFirestore(app, {
@@ -39,6 +39,7 @@ const App = () => {
 
   const connectionStatus = useNetInfo();
 
+  // handle going on- or offline
   useEffect(() => {
     if (connectionStatus.isConnected === false) {
       Alert.alert("Connection lost!");

@@ -1,4 +1,7 @@
-// from https://stackoverflow.com/questions/76754693/react-native-blob-fetch-throws-error-failed-to-construct-response-the-status
+// workaround for fetch() polyfill being broken on android with this version of react native
+// issue on github: https://github.com/facebook/react-native/issues/38625
+// code from: https://stackoverflow.com/questions/76754693/react-native-blob-fetch-throws-error-failed-to-construct-response-the-status
+
 /**
  * Function to convert a URI to a Blob object
  * @param {string} uri - The URI of the file
