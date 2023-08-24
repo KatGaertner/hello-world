@@ -12,16 +12,6 @@ import { styles } from "./styles";
 import { uriToBlob } from "../util/uriToBlob";
 
 const CustomActions = (props, theme, storage) => {
-  // using the permission methods from the library
-  const [cameraPermissions, requestCameraPermission] =
-    ImagePicker.useCameraPermissions();
-  const [imagePickerPermissions, requestImagePickerPermissions] =
-    ImagePicker.useMediaLibraryPermissions();
-  const [mediaLibraryPermissions, requestMediaLibraryPermission] =
-    MediaLibrary.usePermissions();
-  const [locationPermission, requestLocationPermission] =
-    Location.useForegroundPermissions();
-
   const { onSend, user } = props;
 
   // definition of action sheet
@@ -96,11 +86,11 @@ const CustomActions = (props, theme, storage) => {
   };
 
   // use expo-media-library to save image to phone
-  const saveImage = async (result) => {
-    let permission = await requestMediaLibraryPermission();
+  const saveImage = async (imageURI) => {
+    let permission = await MediaLibrary.requestPermissionsAsync();
     if (permission?.granted) {
       try {
-        await MediaLibrary.saveToLibraryAsync(result.assets[0].uri);
+        await MediaLibrary.saveToLibraryAsync(imageURI);
       } catch (error) {
         console.log(error);
         Alert.alert("Error", "Could not save image to your phone.");
@@ -112,7 +102,7 @@ const CustomActions = (props, theme, storage) => {
 
   // use expo-image-picker to get an image from the phone's image library
   const pickImage = async () => {
-    let permission = await requestImagePickerPermissions();
+    let permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permission?.granted) {
       try {
         const result = await ImagePicker.launchImageLibraryAsync();
@@ -130,13 +120,13 @@ const CustomActions = (props, theme, storage) => {
 
   // use expo-image-picker to take a picture with the phone's camera
   const takePhoto = async () => {
-    let permission = await requestCameraPermission();
+    let permission = await ImagePicker.requestCameraPermissionsAsync();
     if (permission?.granted) {
       try {
         const result = await ImagePicker.launchCameraAsync();
         if (!result.canceled) {
           await uploadAndSendImage(result.assets[0].uri);
-          await saveImage(result);
+          await saveImage(result.assets[0].uri);
         }
       } catch (error) {
         Alert.alert("Error", "Could not get camera.");
@@ -149,10 +139,14 @@ const CustomActions = (props, theme, storage) => {
 
   // use expo-location to get and send the phone's location
   const sendLocation = async () => {
-    let permission = await requestLocationPermission();
+    let permission = await Location.requestForegroundPermissionsAsync();
+    console.log(permission);
     if (permission?.granted) {
-      Location.getCurrentPositionAsync({})
-        .then((location) => {
+      try {
+        let location = await Location.getCurrentPositionAsync({});
+        console.log(location);
+        if (location) {
+          console.log(location);
           // send message with the location added
           onSend({
             location: {
@@ -161,11 +155,11 @@ const CustomActions = (props, theme, storage) => {
               accuracy: location.coords.accuracy,
             },
           });
-        })
-        .catch((e) => {
-          console.log(e);
-          Alert.alert("Error", "Could not get location.");
-        });
+        }
+      } catch (error) {
+        console.log(error);
+        Alert.alert("Error", "Could not get location.");
+      }
     } else {
       Alert.alert("Permission denied", "Can't get location.");
     }
