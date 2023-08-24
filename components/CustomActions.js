@@ -33,7 +33,13 @@ const CustomActions = (props, theme, storage) => {
   };
 
   const uploadAndSendImage = async (imageURI) => {
-    const blob = await uriToBlob(imageURI);
+    let blob;
+    if (Platform.OS === "android") {
+      blob = await uriToBlob(imageURI);
+    } else {
+      const response = await fetch(imageURI);
+      blob = await response.blob();
+    }
     const uniqueRefString = generateReference(imageURI);
     const newUploadRef = ref(storage, uniqueRefString);
     try {
