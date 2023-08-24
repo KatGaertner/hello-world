@@ -119,10 +119,11 @@ const CustomActions = (props, theme, storage) => {
 
   const onActionPress = () => {
     const options = [
-      "Send Image from Library",
-      "Send Image from Camera",
-      "Send Location",
-      "Cancel",
+      `${String.fromCodePoint(128444)}${String.fromCodePoint(65039)}` +
+        "  Send Image from Library",
+      `${String.fromCodePoint(128247)}` + "  Send Image from Camera",
+      `${String.fromCodePoint(128205)}` + "  Send Location",
+      `${String.fromCodePoint(10060)}` + "  Cancel",
     ];
     const cancelButtonIndex = options.length - 1;
     actionSheet.showActionSheetWithOptions(
