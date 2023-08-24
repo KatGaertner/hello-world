@@ -141,11 +141,13 @@ const CustomActions = (props, theme, storage) => {
         switch (buttonIndex) {
           case 0:
             pickImage();
+            return;
           case 1:
             takePhoto();
             return;
           case 2:
             sendLocation();
+            return;
           default:
         }
       }
