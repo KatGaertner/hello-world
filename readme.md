@@ -8,6 +8,14 @@ The Hello World app is a chat app for mobile devices, that allows users to chat 
 - An interactive chat interface where messages, as well as images and location data can be sent
 - Both online and offline data storage capabilities
 
+## Screenshots
+<a href="https://github.com/KatGaertner/hello-world/blob/main/screenshots/screenshot-start.png">
+<img src="https://github.com/KatGaertner/hello-world/blob/main/screenshots/screenshot-start.png?raw=true" alt="Start screen screenshot" height="300px"/></a>
+<a href="https://github.com/KatGaertner/hello-world/blob/main/screenshots/screenshot-chat.png">
+<img src="https://github.com/KatGaertner/hello-world/blob/main/screenshots/screenshot-chat.png?raw=true" alt="Chat screen screenshot" height="300px"/></a>
+<a href="https://github.com/KatGaertner/hello-world/blob/main/screenshots/screenshot-send.png">
+<img src="https://github.com/KatGaertner/hello-world/blob/main/screenshots/screenshot-send.png?raw=true" alt="Actions menu screenshot" height="300px"/></a>
+
 ## Technologies
 
 - **Expo** is used to develop a cross-platform React mobile app 
